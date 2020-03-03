@@ -65,14 +65,14 @@ export const MovieCard =({data,type,typeChange,onSave})=>{
                        onPress={()=>typeChange("DVD")}
                    />
                    <Button
-                       title={'BlueRay'}
+                       title={'Bluray'}
                        type={'clear'}
                        titleStyle={{
-                           color:type==='BlueRay'?colors.white:colors.grey,
-                           textShadowColor:type==='BlueRay'?'blue':colors.grey,
-                           textShadowRadius:type==='BlueRay'?10:0
+                           color:type==='Bluray'?colors.white:colors.grey,
+                           textShadowColor:type==='Bluray'?'blue':colors.grey,
+                           textShadowRadius:type==='Bluray'?20:0
                        }}
-                       onPress={()=>typeChange('BlueRay')}
+                       onPress={()=>typeChange('Bluray')}
                    />
                </View>
                <Divider style={MovieCardStyles.DividerStyle}/>
@@ -146,7 +146,7 @@ export const ViewMovieCard=({data})=>{
                 {
                     type==='DVD'?
                         <Text h4 style={{color:'white', paddingTop:'2%'}}>DVD</Text>:
-                        <Text h4 style={{textShadowColor:'blue',textShadowRadius:10,color:'white', paddingTop:'2%'}}>BlueRay</Text>
+                        <Text h4 style={{textShadowColor:'blue',textShadowRadius:10,color:'white', paddingTop:'2%'}}>Bluray</Text>
 
                 }
             </View>

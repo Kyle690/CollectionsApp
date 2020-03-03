@@ -5,7 +5,7 @@ const INITIAL_STATE={
 };
 
 export default (state=INITIAL_STATE,action)=>{
-    if(action.payload===UPDATE_START){
+    if(action.type===UPDATE_START){
         return {...state, hasLoaded: true}
     }else{
         return {...state}

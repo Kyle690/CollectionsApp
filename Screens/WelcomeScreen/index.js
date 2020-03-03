@@ -8,7 +8,8 @@ import {colors} from "../../Styles/colors";
 
 const WelcomeScreen=({navigation, hasLoaded})=>{
 
-
+    hasLoaded.hasLoaded? navigation.navigate('App'):null;
+    //console.log(hasLoaded.hasLoaded);
 
     return (
         <View style={Styles.containerStyle}>
@@ -18,10 +19,10 @@ const WelcomeScreen=({navigation, hasLoaded})=>{
                     style={{height:150,width:150}}
                />
                <Text h3 style={Styles.titleStyle}>
-                   Welcome to Collections
+                   Welcome to Movie Catalog
                </Text>
                 <Text  style={Styles.textStyle}>
-                    A modern way to catalog your DVD's and BluRay Movies and Series
+                    A modern way to catalog your DVD's and Bluray Movies and Series
                 </Text>
             </View>
             <BlueButton
@@ -53,6 +54,7 @@ const Styles=StyleSheet.create({
 });
 
 const mapStateToProps=(state)=>{
+    //console.log(state.settings);
   return {hasLoaded: state.Settings}
 };
 

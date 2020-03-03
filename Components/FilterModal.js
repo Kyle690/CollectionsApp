@@ -7,7 +7,7 @@ import {OutlineButton} from "./Buttons";
 
 const Genres =['Action','Drama',"Sci-Fi","Thriller","Adventure","Romance","Comedy","Biography","War","Magic","Mystery","Suspense","History","Crime" ];
 const Ratings=[5,4,3,2,1];
-const Formats=['DVD','BlueRay'];
+const Formats=['DVD','Bluray'];
 class FilterModal extends React.Component{
 
     state={

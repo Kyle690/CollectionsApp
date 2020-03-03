@@ -21,6 +21,8 @@ import EditSeriesScreen from "./Screens/Series/EditSeriesScreen";
 import ViewSeriesScreen from "./Screens/Series/ViewSeriesScreen";
 import SettingsScreen from "./Screens/Settings/SettingsScreen";
 import helpScreen from "./Screens/WelcomeScreen/helpScreen";
+import {ScreenHeight} from "./Styles";
+import LoadingScreen from "./Screens/LoadingScreen";
 
 const Stack = createStackNavigator();
 const Tab=createBottomTabNavigator();
@@ -35,8 +37,6 @@ const MyTheme = {
         border: colors.grey,
     },
 };
-
-
 
 const MovieStack=createStackNavigator();
 const MovieScreens=({navigation})=>{
@@ -143,7 +143,10 @@ function App(){
 
     return (
         <Provider store={store}>
-            <PersistGate persistor={persistor}>
+            <PersistGate
+                persistor={persistor}
+                loading={<LoadingScreen/>}
+            >
                 <NavigationContainer theme={MyTheme}>
                     <Stack.Navigator initialRouteName="WelcomeScreen" headerMode="none">
                         <Stack.Screen name={'WelcomeScreen'} component={WelcomeScreen}/>
@@ -160,6 +163,7 @@ function App(){
 
                                     })}
                                     tabBarOptions={{
+                                        style:{height:80},
                                         activeTintColor: colors.white,
                                         inactiveTintColor: colors.grey,
                                     }}

@@ -7,11 +7,11 @@ import {colors} from "../../Styles/colors";
 import {HelpStyles} from "../../Styles";
 import SearchMovie from "./HelpScreens/SearchMovie";
 import OpenMovie from "./HelpScreens/OpenMovie";
-import {ViewMovieCard} from "../../Components/MovieCard";
 import ViewMovie from "./HelpScreens/ViewMovie";
 import LetsGo from "./HelpScreens/LetsGo";
 import FocusComponent from "../../Components/FocusComponent";
-import {SortList} from "../../Functions/sortCatalogFunction";
+import {connect}from 'react-redux';
+import {updateStart} from "../../Store/Actions/SettingsActions";
 
 
 class helpScreen extends React.Component{
@@ -25,7 +25,9 @@ class helpScreen extends React.Component{
             this.setState({index:this.state.index+=1})
         }else{
             this.setState({index:6});
-            this.props.navigation.navigate('App');
+            this.props.updateStart(()=>{
+                this.props.navigation.navigate('App');
+            });
         }
 
     };
@@ -105,4 +107,4 @@ const Styles=StyleSheet.create({
     }
 });
 
-export default helpScreen;
+export default connect(null, {updateStart})(helpScreen);

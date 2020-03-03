@@ -30,7 +30,7 @@ class AddSeriesScreen extends React.Component{
         const search = this.state.search;
         if(search!==''){
             this.setState({loading:true});
-            this.props.SearchTitle(search,res=>{
+            this.props.SearchTitle(search,'series',res=>{
                 res.status===1?
                     this.setState({loading:false,content:res.data, error:null})
                     :this.setState({loading:false,content:null,error:res.msg})

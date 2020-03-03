@@ -1,8 +1,8 @@
 import React from'react';
-import {View, Button, Image, StatusBar, ScrollView, Platform} from "react-native";
+import {View, Button, Image, StatusBar, ScrollView, Platform, SafeAreaView} from "react-native";
 import {Text, ButtonGroup, ListItem, Rating, SearchBar} from "react-native-elements";
 import {connect}from 'react-redux';
-import {ScreenWidth} from "../../Styles";
+import {ScreenHeight, ScreenWidth} from "../../Styles";
 import {TouchableOpacity} from "react-native";
 import {colors} from "../../Styles/colors";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -12,7 +12,8 @@ import {ClearAll} from "../../Store/Actions/MovieActions";
 import FocusComponent from "../../Components/FocusComponent";
 import FilterModal from "../../Components/FilterModal";
 import {getRandom} from "../../Functions";
-
+import {AdMobBanner} from 'expo-ads-admob';
+import {BannerAddId} from "../../Constants/constants";
 
 class MoviesHomeScreen extends React.Component{
 
@@ -29,6 +30,7 @@ class MoviesHomeScreen extends React.Component{
   };
 
   componentDidMount() {
+     // this.initAds().catch((error) => console.log(error));
       this.props.navigation.setOptions({
           headerLeft:()=>(
               <Button
@@ -49,7 +51,14 @@ class MoviesHomeScreen extends React.Component{
         if(movies.length>0){
 
             return (
-                <View style={{marginBottom:"50%",flex:1,flexDirection:'row', justifyContent:'space-around',flexWrap:'wrap'}}>
+                <View style={{
+                    flex:3,
+                    flexDirection:'row',
+                    justifyContent:'space-around',
+                    alignItems:'center',
+                    flexWrap:'wrap',
+                    marginBottom:500
+                }}>
                     {movies.map(movie=>{
                         const {title, poster, id, genre,rating,type}=movie;
                         let check=true;
@@ -76,16 +85,39 @@ class MoviesHomeScreen extends React.Component{
                             return (
                                 <TouchableOpacity
                                     key={id}
-                                    style={{marginBottom:"3%",marginTop:'3%',height:ScreenWidth*0.5,width:ScreenWidth*0.28,justifyContent:'center', flexDirection:'column'}}
+                                    style={{
+                                        marginBottom:ScreenHeight*0.01,
+                                        marginTop:ScreenHeight*0.01,
+                                        height:ScreenWidth*0.5,
+                                        width:ScreenWidth*0.28,
+                                        justifyContent:'center',
+                                        alignItems:'center',
+                                        flexDirection:'column'
+                                    }}
                                     onPress={()=>this.handleView(movie)}
                                 >
                                     <View style={{height:200,width:100}}>
                                     <Image
                                         source={{uri:poster}}
-                                        style={{resizeMode:'contain',height:ScreenWidth*0.5,width:ScreenWidth*0.28, alignSelf:'center'}}
+                                        style={{
+                                            resizeMode:'contain',
+                                            height:ScreenWidth*0.45,
+                                            width:ScreenWidth*0.25,
+                                            alignSelf:'center',
+                                            shadowColor:type==='Bluray'?'blue':colors.mainBackground,
+                                            shadowOpacity:0.8,
+                                            shadowRadius:type==='Bluray'?10:0,
+                                            shadowOffset:{width:0,height:10}
+                                        }}
                                     />
+                                        <Text style={{
+                                            color:'white',
+                                            textAlign:'center',
+                                            textShadowColor:type==='Bluray'?'blue':colors.mainBackground,
+                                            textShadowRadius:type==='Bluray'?10:0
+                                        }}>{title}</Text>
                                     </View>
-                                    <Text style={{color:'white', textAlign:'center'}}>{title}</Text>
+
 
                                 </TouchableOpacity>
                             )
@@ -114,7 +146,9 @@ class MoviesHomeScreen extends React.Component{
       if(movies.length>0){
 
           return (
-              <View style={{marginBottom:"50%"}}>
+              <View style={{
+                  marginBottom:500
+              }}>
                   {movies.map(movie=>{
                       const {poster,title,rating, year,id}=movie;
                       let check=true;
@@ -157,7 +191,6 @@ class MoviesHomeScreen extends React.Component{
                                   subtitle={year}
                                   subtitleStyle={{color:colors.lightGrey}}
                                   leftElement={<View><Image source={{uri:poster}} style={{height:100,width:50}}/></View>}
-                                  //leftAvatar={{source:{uri:poster}}}
                                   containerStyle={{backgroundColor:colors.mainBackground}}
                                   onPress={()=>this.handleView(movie)}
                               />
@@ -167,6 +200,7 @@ class MoviesHomeScreen extends React.Component{
 
 
                   })}
+
               </View>
           )
 
@@ -235,7 +269,8 @@ class MoviesHomeScreen extends React.Component{
    render(){
        const {viewType,search, sortByModal, sortBy, filterModal, filterGenres, filterRatings, filterFormat}=this.state;
        return (
-           <View>
+           <SafeAreaView>
+
                <FilterModal
                 show={filterModal}
                 onClose={()=>this.setState({filterModal:false})}
@@ -259,6 +294,21 @@ class MoviesHomeScreen extends React.Component{
                 onClear={()=>this.handleSortByUpdate('clear')}
                />
                <StatusBar barStyle={'light-content'}/>
+               <AdMobBanner
+                   bannerSize="smartBannerPortrait"
+                   adUnitID={BannerAddId}
+                   servePersonalizedAds={false} // true or false
+                   onDidFailToReceiveAdWithError={err=>console.log(err)}
+                   style={{
+                       position: "absolute",
+                       width: "100%",
+                       //top:50,
+                       zIndex:1000
+                      // bottom:viewType==='tile'?ScreenHeight*0.08:ScreenHeight*0.13,
+                       //marginBottom:ScreenHeight*0.1
+                   }}
+               />
+               <View style={{marginTop:50}}>
                {filterRatings===0 && filterFormat==='' && filterGenres.length===0?
                <SearchBar
                    placeholder="Search movie titles ..."
@@ -271,7 +321,7 @@ class MoviesHomeScreen extends React.Component{
                    containerStyle={{backgroundColor:colors.mainBackground, borderBottomColor: 'transparent'}}
                    returnKeyType="search"
                />:<View/>}
-
+               </View>
                 <ButtonGroup
                     buttons={
                         ['Sort by',
@@ -301,13 +351,18 @@ class MoviesHomeScreen extends React.Component{
                    </View>:<View/>
 
                }
-               <ScrollView style={{minHeight:'100%'}}>
+
+               <ScrollView
+                   style={{minHeight:ScreenHeight}}
+
+               >
                 {viewType==='tile'?
                     this.renderMoviesTile():
                     this.renderMoviesRow()
                 }
                </ScrollView>
-           </View>
+
+           </SafeAreaView>
        )
    }
 
