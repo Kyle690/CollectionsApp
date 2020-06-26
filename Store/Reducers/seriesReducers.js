@@ -1,4 +1,4 @@
-import {ADD_SERIES, DELETE_SERIES, UPDATE_SERIES, CLEAR_ALL_SERIES} from "../Types";
+import {ADD_SERIES, DELETE_SERIES, UPDATE_SERIES, CLEAR_ALL_SERIES, IMPORT_SERIES} from "../Types";
 import {IDGenerator} from "../../Functions";
 
 const INITIAL_STATE={
@@ -7,6 +7,8 @@ const INITIAL_STATE={
 
 export default (state=INITIAL_STATE,action)=>{
     switch (action.type){
+        case IMPORT_SERIES:
+            return {series: action.payload};
         case ADD_SERIES:
             state.series[IDGenerator()]=action.payload;
             return {...state, series:state.series};

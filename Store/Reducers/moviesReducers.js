@@ -1,4 +1,4 @@
-import {ADD_MOVIE,UPDATE_MOVIE,DELETE_MOVIE, CLEAR_ALL_MOVIES} from "../Types";
+import {ADD_MOVIE, UPDATE_MOVIE, DELETE_MOVIE, CLEAR_ALL_MOVIES, IMPORT_MOVIES} from "../Types";
 import {IDGenerator} from "../../Functions";
 
 const INITIAL_STATE={
@@ -7,6 +7,8 @@ const INITIAL_STATE={
 
 export default (state=INITIAL_STATE,action)=>{
     switch (action.type){
+        case IMPORT_MOVIES:
+            return {movies:action.payload};
         case ADD_MOVIE:
             state.movies[IDGenerator()]=action.payload;
             return {...state, movies:state.movies};

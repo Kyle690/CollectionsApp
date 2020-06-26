@@ -1,9 +1,7 @@
 import React from'react';
-import {View, Button, Image, StatusBar, ScrollView, Platform, SafeAreaView} from "react-native";
-import {Text, ButtonGroup, ListItem, Rating, SearchBar} from "react-native-elements";
+import {View, Button, StatusBar, ScrollView, Platform, SafeAreaView} from "react-native";
+import {Text, ButtonGroup, SearchBar} from "react-native-elements";
 import {connect}from 'react-redux';
-import {ScreenHeight, ScreenWidth} from "../../Styles";
-import {TouchableOpacity} from "react-native";
 import {colors} from "../../Styles/colors";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import SortByModal from "../../Components/SortByModal";
@@ -14,6 +12,7 @@ import FilterModal from "../../Components/FilterModal";
 import {getRandom} from "../../Functions";
 import {AdMobBanner} from 'expo-ads-admob';
 import {BannerAddId} from "../../Constants/constants";
+import FlatlistRender from "../../Functions/FlatlistRender";
 
 class MoviesHomeScreen extends React.Component{
 
@@ -44,169 +43,23 @@ class MoviesHomeScreen extends React.Component{
       this.setState({movies:SortList(this.props.movies)});
   }
 
-  renderMoviesTile=()=>{
-      const {movies, filterGenres,filterFormat,filterRatings} = this.state;
-      const search = this.state.search.toLowerCase();
-
-        if(movies.length>0){
-
-            return (
-                <View style={{
-                    flex:3,
-                    flexDirection:'row',
-                    justifyContent:'space-around',
-                    alignItems:'center',
-                    flexWrap:'wrap',
-                    marginBottom:500
-                }}>
-                    {movies.map(movie=>{
-                        const {title, poster, id, genre,rating,type}=movie;
-                        let check=true;
-                        if(filterGenres.length>0 || filterRatings!==0 ||filterFormat!==''){
-                            check=false;
-
-                            if(filterFormat === type){
-                                check=true;
-                            }
-                            const sortedRating = Math.ceil(parseFloat(rating)/2);
-                            if(sortedRating>=filterRatings && sortedRating<filterRatings+1 ){
-                                check=true
-                            }
-
-                            const genreArr= genre.split(', ').map(g=>g.toUpperCase());
-                            if(genreArr.some(r=>filterGenres.map(c=>c.toUpperCase()).includes(r))){
-
-                                check=true
-                            }
-                        }
-
-
-                        if(title.toLowerCase().includes(search) && check){
-                            return (
-                                <TouchableOpacity
-                                    key={id}
-                                    style={{
-                                        marginBottom:ScreenHeight*0.01,
-                                        marginTop:ScreenHeight*0.01,
-                                        height:ScreenWidth*0.5,
-                                        width:ScreenWidth*0.28,
-                                        justifyContent:'center',
-                                        alignItems:'center',
-                                        flexDirection:'column'
-                                    }}
-                                    onPress={()=>this.handleView(movie)}
-                                >
-                                    <View style={{height:200,width:100}}>
-                                    <Image
-                                        source={{uri:poster}}
-                                        style={{
-                                            resizeMode:'contain',
-                                            height:ScreenWidth*0.45,
-                                            width:ScreenWidth*0.25,
-                                            alignSelf:'center',
-                                            shadowColor:type==='Bluray'?'blue':colors.mainBackground,
-                                            shadowOpacity:0.8,
-                                            shadowRadius:type==='Bluray'?10:0,
-                                            shadowOffset:{width:0,height:10}
-                                        }}
-                                    />
-                                        <Text style={{
-                                            color:'white',
-                                            textAlign:'center',
-                                            textShadowColor:type==='Bluray'?'blue':colors.mainBackground,
-                                            textShadowRadius:type==='Bluray'?10:0
-                                        }}>{title}</Text>
-                                    </View>
-
-
-                                </TouchableOpacity>
-                            )
-                        }
-
-                    })}
-                </View>
-            )
-
-
-        }else{
-            return (
-                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-                    <Text style={{color:'white'}}>No Movies yet...</Text>
-                </View>
-
-            )
-        }
-
-    };
-
-  renderMoviesRow=()=>{
-      const {movies, filterGenres,filterRatings,filterFormat} = this.state;
-      const search = this.state.search.toLowerCase();
+  renderMovies=()=>{
+      const {movies, viewType,filterGenres,filterFormat,filterRatings, search } = this.state;
 
       if(movies.length>0){
-
-          return (
-              <View style={{
-                  marginBottom:500
-              }}>
-                  {movies.map(movie=>{
-                      const {poster,title,rating, year,id}=movie;
-                      let check=true;
-                      if(filterGenres.length>0 || filterRatings!==0 ||filterFormat!==''){
-                          check=false;
-
-                          if(filterFormat === type){
-                              check=true;
-                          }
-                          const sortedRating = Math.ceil(parseFloat(rating)/2);
-                          if(sortedRating>=filterRatings && sortedRating<filterRatings+1 ){
-                              check=true
-                          }
-
-                          const genreArr= genre.split(', ').map(g=>g.toUpperCase());
-                          if(genreArr.some(r=>filterGenres.map(c=>c.toUpperCase()).includes(r))){
-
-                              check=true
-                          }
-                      }
-                      if(title.toLowerCase().includes(search) && check){
-                          return (
-                              <ListItem
-                                  key={id}
-                                  bottomDivider
-                                  title={title}
-                                  titleStyle={{color:colors.white}}
-                                  rightTitle={
-                                      <Rating
-                                          imageSize={15}
-                                          readonly
-                                          count={5}
-                                          type={'custom'}
-                                          fractions={2}
-                                          ratingColor={colors.grey}
-                                          tintColor={colors.mainBackground}
-                                          startingValue={parseFloat(rating) / 2}
-                                      />
-                                  }
-                                  subtitle={year}
-                                  subtitleStyle={{color:colors.lightGrey}}
-                                  leftElement={<View><Image source={{uri:poster}} style={{height:100,width:50}}/></View>}
-                                  containerStyle={{backgroundColor:colors.mainBackground}}
-                                  onPress={()=>this.handleView(movie)}
-                              />
-                          )
-                      }
-
-
-
-                  })}
-
-              </View>
+          return(
+              <FlatlistRender
+                data={movies}
+                viewType={viewType}
+                filterFormat={filterFormat}
+                filterGenres={filterGenres}
+                filterRatings={filterRatings}
+                search={search}
+                handleView={this.handleView}
+              />
           )
-
-
-
-      }else{
+      }
+      else{
           return (
               <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                   <Text style={{color:'white'}}>No Movies yet...</Text>
@@ -270,7 +123,6 @@ class MoviesHomeScreen extends React.Component{
        const {viewType,search, sortByModal, sortBy, filterModal, filterGenres, filterRatings, filterFormat}=this.state;
        return (
            <SafeAreaView>
-
                <FilterModal
                 show={filterModal}
                 onClose={()=>this.setState({filterModal:false})}
@@ -352,15 +204,11 @@ class MoviesHomeScreen extends React.Component{
 
                }
 
-               <ScrollView
-                   style={{minHeight:ScreenHeight}}
-
+               <View
+                   style={{paddingBottom:300,alignItems:viewType==='tile'?'center':null}}
                >
-                {viewType==='tile'?
-                    this.renderMoviesTile():
-                    this.renderMoviesRow()
-                }
-               </ScrollView>
+                   {this.renderMovies()}
+               </View>
 
            </SafeAreaView>
        )

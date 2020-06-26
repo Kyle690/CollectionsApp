@@ -19,10 +19,14 @@ import ViewMovieScreen from "./Screens/Movies/ViewMovieScreen";
 import AddSeriesScreen from "./Screens/Series/AddSeriesScreen";
 import EditSeriesScreen from "./Screens/Series/EditSeriesScreen";
 import ViewSeriesScreen from "./Screens/Series/ViewSeriesScreen";
-import SettingsScreen from "./Screens/Settings/SettingsScreen";
 import helpScreen from "./Screens/WelcomeScreen/helpScreen";
-import {ScreenHeight} from "./Styles";
 import LoadingScreen from "./Screens/LoadingScreen";
+import PrivacyPolicy from "./Screens/PrivacyPolicy";
+import AuthLoginScreen from "./Screens/Auth/AuthLoginScreen";
+import AuthRegisterScreen from "./Screens/Auth/AuthRegisterScreen";
+import AuthResetPasswordScreen from "./Screens/Auth/AuthResetPasswordScreen";
+import AuthProfile from "./Screens/Auth/AuthProfile";
+import AuthEditProfile from "./Screens/Auth/AuthEditProfile";
 
 const Stack = createStackNavigator();
 const Tab=createBottomTabNavigator();
@@ -116,28 +120,34 @@ const SeriesScreens=({navigation})=>{
   )
 };
 
-const SettingsStack=createStackNavigator();
-const SettingsScreens=({navigation})=>{
-  return (
-      <SettingsStack.Navigator initialRouteNames={'settings'}>
-          <SettingsStack.Screen
-              name={'Settings'}
-              component={SettingsScreen}
-              options={({route})=>({
-                  headerLeft:()=>(
-                      <Button
-                        title={'Help'}
-                        color={"#fff"}
-                        onPress={()=>navigation.navigate('HelpScreen')}
-                      />
-                  )
-              })}
-          />
-      </SettingsStack.Navigator>
-  )
-};
-
-
+const AuthStack=createStackNavigator();
+const AuthScreens=({navigation})=>{
+    return (
+        <AuthStack.Navigator initialRouteNames={'authProfile'}>
+            <AuthStack.Screen
+                name={'authProfile'}
+                component={AuthProfile}
+                options={()=>({
+                    headerTitle:'Profile',
+                    headerRight:()=>(
+                        <Button
+                            title={'Edit'}
+                            color={'#fff'}
+                            onPress={()=>navigation.navigate('AuthEdit')}
+                        />
+                    )
+                })}
+            />
+            <AuthStack.Screen
+                name={'AuthEdit'}
+                component={AuthEditProfile}
+                options={()=>({
+                    headerTitle:'Edit Profile'
+                })}
+            />
+        </AuthStack.Navigator>
+    )
+}
 
 function App(){
 
@@ -150,14 +160,18 @@ function App(){
                 <NavigationContainer theme={MyTheme}>
                     <Stack.Navigator initialRouteName="WelcomeScreen" headerMode="none">
                         <Stack.Screen name={'WelcomeScreen'} component={WelcomeScreen}/>
+                        <Stack.Screen name={'AuthLogin'} component={AuthLoginScreen} screenOptions={{headerShown:false}}/>
+                        <Stack.Screen name={'AuthReset'} component={AuthResetPasswordScreen} screenOptions={{headerShown:false}}/>
+                        <Stack.Screen name={'AuthRegister'} component={AuthRegisterScreen}screenOptions={{headerShown:false}}/>
                         <Stack.Screen name={'HelpScreen'} component={helpScreen}/>
+                        <Stack.Screen name={'Privacy'} component={PrivacyPolicy}/>
                         <Stack.Screen name={'App'}>
                             {()=>(
                                 <Tab.Navigator
                                     initialRouteName='MoviesTab'
                                     screenOptions={({route})=>({
                                         tabBarIcon:({color})=>{
-                                            const iconName= route.name==='MoviesTab'?'movie':route.name==='SeriesTab'?'movie-roll':'cogs';
+                                            const iconName= route.name==='MoviesTab'?'movie':route.name==='SeriesTab'?'movie-roll':'account';
                                             return <Icon name={iconName} size={30} color={color} />
                                         }
 
@@ -170,7 +184,7 @@ function App(){
                                 >
                                     <Tab.Screen name={'MoviesTab'} component={MovieScreens} options={{title:'Movies'}}/>
                                     <Tab.Screen name={'SeriesTab'} component={SeriesScreens} options={{title:'Series'}}/>
-                                    <Tab.Screen name={'SettingsTab'} component={SettingsScreens} options={{title:'Settings'}}/>
+                                    <Tab.Screen name={'AuthTab'} component={AuthScreens} options={{title:'Profile'}}/>
                                 </Tab.Navigator>
                             )}
                         </Stack.Screen>

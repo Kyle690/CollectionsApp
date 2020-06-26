@@ -13,6 +13,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import {ScreenHeight, ScreenWidth} from "../../Styles";
 import {BannerAddId} from "../../Constants/constants";
 import {AdMobBanner} from "expo-ads-admob";
+import FlatlistRender from "../../Functions/FlatlistRender";
 
 
 class SeriesHomeScreen extends React.Component{
@@ -42,91 +43,20 @@ class SeriesHomeScreen extends React.Component{
         this.setState({series:SortList(this.props.series)});
     }
 
-    renderSeriesTile=()=>{
-        const {series, filterGenres,filterFormat,filterRatings} = this.state;
-        const search = this.state.search.toLowerCase();
-
+   renderSeries=()=>{
+        const {series ,viewType,filterGenres,filterFormat,filterRatings, search } = this.state;
         if(series.length>0){
-
-            return (
-                <View
-                    style={{
-                        flex:3,
-                        flexDirection:'row',
-                        justifyContent:'space-around',
-                        alignItems:'center',
-                        flexWrap:'wrap',
-                        marginBottom:500
-                    }}
-                >
-                    {series.map(seriesD=>{
-                        const {title, poster, id, genre,rating,type}=seriesD;
-                        let check=true;
-                        if(filterGenres.length>0 || filterRatings!==0 ||filterFormat!==''){
-                            check=false;
-
-                            if(filterFormat === type){
-                                check=true;
-                            }
-                            const sortedRating = Math.ceil(parseFloat(rating)/2);
-                            if(sortedRating>=filterRatings && sortedRating<filterRatings+1 ){
-                                check=true
-                            }
-
-                            const genreArr= genre.split(', ').map(g=>g.toUpperCase());
-                            if(genreArr.some(r=>filterGenres.map(c=>c.toUpperCase()).includes(r))){
-
-                                check=true
-                            }
-                        }
-
-
-                        if(title.toLowerCase().includes(search) && check){
-                            return (
-                                <TouchableOpacity
-                                    key={id}
-                                    style={{
-                                        marginBottom:ScreenHeight*0.01,
-                                        marginTop:ScreenHeight*0.01,
-                                        height:ScreenWidth*0.5,
-                                        width:ScreenWidth*0.28,
-                                        justifyContent:'center',
-                                        alignItems:'center',
-                                        flexDirection:'column'
-                                    }}
-                                    onPress={()=>this.handleView(seriesD)}
-                                >
-                                    <View style={{height:200,width:100}}>
-                                        <Image
-                                            source={{uri:poster}}
-                                            style={{
-                                                resizeMode:'contain',
-                                                height:ScreenWidth*0.45,
-                                                width:ScreenWidth*0.25,
-                                                alignSelf:'center',
-                                                shadowColor:type==='Bluray'?'blue':colors.mainBackground,
-                                                shadowOpacity:0.8,
-                                                shadowRadius:type==='Bluray'?10:0,
-                                                shadowOffset:{width:0,height:10}
-                                            }}
-                                        />
-                                        <Text style={{
-                                            color:'white',
-                                            textAlign:'center',
-                                            textShadowColor:type==='Bluray'?'blue':colors.mainBackground,
-                                            textShadowRadius:type==='Bluray'?10:0
-                                        }}>{title}</Text>
-                                    </View>
-
-                                </TouchableOpacity>
-                            )
-                        }
-
-                    })}
-                </View>
+            return(
+                <FlatlistRender
+                    data={series}
+                    viewType={viewType}
+                    filterFormat={filterFormat}
+                    filterGenres={filterGenres}
+                    filterRatings={filterRatings}
+                    search={search}
+                    handleView={this.handleView}
+                />
             )
-
-
         }else{
             return (
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
@@ -135,87 +65,9 @@ class SeriesHomeScreen extends React.Component{
 
             )
         }
-    };
-
-    renderSeriesRow=()=>{
-        const {series, filterGenres,filterRatings,filterFormat} = this.state;
-        const search = this.state.search.toLowerCase();
-
-        if(series.length>0){
-
-            return (
-                <View style={{
-                    marginBottom:500
-                }}>
-                    {series.map(seriesD=>{
-                        const {poster,title,rating, year,id}=seriesD;
-                        let check=true;
-                        if(filterGenres.length>0 || filterRatings!==0 ||filterFormat!==''){
-                            check=false;
-
-                            if(filterFormat === type){
-                                check=true;
-                            }
-                            const sortedRating = Math.ceil(parseFloat(rating)/2);
-                            if(sortedRating>=filterRatings && sortedRating<filterRatings+1 ){
-                                check=true
-                            }
-
-                            const genreArr= genre.split(', ').map(g=>g.toUpperCase());
-                            if(genreArr.some(r=>filterGenres.map(c=>c.toUpperCase()).includes(r))){
-
-                                check=true
-                            }
-                        }
-                        if(title.toLowerCase().includes(search) && check){
-                            return (
-                                <ListItem
-                                    key={id}
-                                    bottomDivider
-                                    title={title}
-                                    titleStyle={{color:colors.white}}
-                                    rightTitle={
-                                        <Rating
-                                            imageSize={15}
-                                            readonly
-                                            count={5}
-                                            type={'custom'}
-                                            fractions={2}
-                                            ratingColor={colors.grey}
-                                            tintColor={colors.mainBackground}
-                                            startingValue={parseFloat(rating) / 2}
-                                        />
-                                    }
-                                    subtitle={year}
-                                    subtitleStyle={{color:colors.lightGrey}}
-                                    leftElement={<View><Image source={{uri:poster}} style={{height:100,width:50}}/></View>}
-                                    //leftAvatar={{source:{uri:poster}}}
-                                    containerStyle={{backgroundColor:colors.mainBackground}}
-                                    onPress={()=>this.handleView(seriesD)}
-                                />
-                            )
-                        }
+    }
 
 
-
-                    })}
-
-                </View>
-            )
-
-
-
-        }else{
-            return (
-                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                    <Text style={{color:'white'}}>No Series yet...</Text>
-                </View>
-
-            )
-        }
-
-
-    };
 
 
     handleButtonGroup=(index)=>{
@@ -350,12 +202,11 @@ class SeriesHomeScreen extends React.Component{
                     </View>:<View/>
 
                 }
-                <ScrollView style={{minHeight:ScreenHeight}}>
-                    {viewType==='tile'?
-                        this.renderSeriesTile():
-                        this.renderSeriesRow()
-                    }
-                </ScrollView>
+                <View
+                    style={{paddingBottom:300,alignItems:viewType==='tile'?'center':null}}
+                >
+                    {this.renderSeries()}
+                </View>
             </View>
         )
     }

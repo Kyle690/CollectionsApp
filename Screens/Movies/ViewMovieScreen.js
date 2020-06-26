@@ -14,7 +14,6 @@ class ViewMovieScreen extends React.Component{
                     data={this.props.route.params.data}
 
                 />
-
             </ScrollView>
         )
     }

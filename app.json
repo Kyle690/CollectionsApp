@@ -9,7 +9,7 @@
       "android",
       "web"
     ],
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -17,11 +17,13 @@
       "resizeMode": "contain",
       "backgroundColor": "#000000"
     },
+    "backgroundColor": "#1D1D27",
+    "primaryColor": "#1D1D27",
     "updates": {
       "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": [
-      "**/*"
+      "assets/*"
     ],
     "ios": {
       "config": {
@@ -30,6 +32,8 @@
       "supportsTablet": false
     },
     "android": {
+      "versionCode": 1,
+      "backgroundColor": "#1D1D27",
       "config": {
         "googleMobileAdsAppId": "ca-app-pub-3940256099942544~3347511713"
       }

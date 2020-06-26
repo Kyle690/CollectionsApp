@@ -1,5 +1,6 @@
 import axios from'axios';
 import {Platform} from "react-native";
+import {SearchKey} from "../../Keys";
 
 export const SearchTitle=(search,type,callback)=>async dispatch=>{
 
@@ -8,7 +9,7 @@ export const SearchTitle=(search,type,callback)=>async dispatch=>{
         search,
         platform:Platform.OS,
         type,
-        apiKey:'02004532-146a-4c5d-8216-63db3db90844'
+        apiKey:SearchKey
     }).catch(()=>callback({status:2,msg:"Error - Server error"}));
 
 

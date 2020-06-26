@@ -1,15 +1,17 @@
-import {UPDATE_START} from "../Types";
+import {RESET_START, UPDATE_START} from "../Types";
 
 const INITIAL_STATE={
-  hasLoaded:false
+  hasLoaded:false,
+  signedInBefore:false
 };
 
 export default (state=INITIAL_STATE,action)=>{
-    if(action.type===UPDATE_START){
-        return {...state, hasLoaded: true}
-    }else{
-        return {...state}
+    switch(action.type){
+        case UPDATE_START:
+            return {...state,hasLoaded: true, signedInBefore: true}
+        case RESET_START:
+            return {...state,hasLoaded: false};
+        default:
+            return {...state}
     }
-
-
 }

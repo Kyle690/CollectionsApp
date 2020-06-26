@@ -32,7 +32,6 @@ export const DeleteMovie=(id,callback)=>dispatch=>{
   dispatch({type:DELETE_MOVIE,payload:id});
   callback({status:1});
 };
-
 export const ClearAll=(callback)=>dispatch=>{
         dispatch({type:CLEAR_ALL_MOVIES});
         callback({status:1})

@@ -19,17 +19,23 @@ class helpScreen extends React.Component{
     state={
         index:1
     };
+
+    componentDidMount() {
+        if(this.props.signedInBefore && this.props.hasLoaded){
+            this.props.navigation.navigate('App');
+        }
+    }
+
     handleNext=()=>{
         const {index}=this.state;
         if(index<5){
             this.setState({index:this.state.index+=1})
         }else{
             this.setState({index:6});
-            this.props.updateStart(()=>{
-                this.props.navigation.navigate('App');
+            this.props.updateStart(res=>{
+                this.props.navigation.push('App')
             });
         }
-
     };
 
     _onFocusUpdate=index=>{
@@ -107,4 +113,11 @@ const Styles=StyleSheet.create({
     }
 });
 
-export default connect(null, {updateStart})(helpScreen);
+const mapStateToProps=(state)=>{
+  return {
+      hasLoaded:state.Settings.hasLoaded,
+      signedInBefore:state.Settings.signedInBefore
+  }
+};
+
+export default connect(mapStateToProps, {updateStart})(helpScreen);
