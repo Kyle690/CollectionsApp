@@ -21,7 +21,7 @@ const PrivacyPolicy = ({navigation, route})=>{
             </View>
             <WebView
                 style={{ marginTop: 20 }}
-                source={{uri:'https://kylewinter.net'}}
+                source={{uri:'https://collections-5133b.firebaseapp.com/privacy'}}
             />
         </View>
 
@@ -39,7 +39,7 @@ const PrivacyPolicy = ({navigation, route})=>{
 
                 If you choose to use our Service, then you agree to the collection and use of information in relation to this policy. The Personal Information that we collect is used for providing and improving the Service. We will not use or share your information with anyone except as described in this Privacy Policy.
 
-                The terms used in this Privacy Policy have the same meanings as in our Terms and Conditions, which is accessible at Movie Catalog unless otherwise defined in this Privacy Policy.
+                The terms used in this Privacy Policy have the same meanings as in our Legal and Conditions, which is accessible at Movie Catalog unless otherwise defined in this Privacy Policy.
             </Text>
             <Text h4 style={title}>
                 Information Collection and Use

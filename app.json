@@ -3,7 +3,6 @@
     "name": "Movie Catalog",
     "slug": "moiveCatalog",
     "privacy": "public",
-    "sdkVersion": "36.0.0",
     "platforms": [
       "ios",
       "android",
@@ -32,8 +31,11 @@
       "supportsTablet": false
     },
     "android": {
+      "package": "net.kylewinter.catalog",
       "versionCode": 1,
       "backgroundColor": "#1D1D27",
+      "icon": "./assets/icon.png",
+      "permissions": [],
       "config": {
         "googleMobileAdsAppId": "ca-app-pub-3940256099942544~3347511713"
       }

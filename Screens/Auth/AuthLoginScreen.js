@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {View,StyleSheet, SafeAreaView, Image, StatusBar, TouchableOpacity} from 'react-native';
+import {View,StyleSheet, SafeAreaView, Image,TouchableOpacity} from 'react-native';
 import {Input, Text} from "react-native-elements";
 import {connect}from'react-redux';
 
@@ -21,7 +21,7 @@ const AuthLoginScreen=({navigation, logUserIn})=>{
     const [alertMsg,setAlertMsg]=useState(null);
 
     const onSubmit=()=>{
-        const error = Validation('login',{email,password});
+        const error = Validation({email,password});
         if(!error){
             setLoading(true);
             logUserIn({email,password},res=>{
@@ -34,7 +34,8 @@ const AuthLoginScreen=({navigation, logUserIn})=>{
                 }
             });
         }else{
-            alert(error);
+            setAlert(true);
+            setAlertMsg(error);
         }
     }
 

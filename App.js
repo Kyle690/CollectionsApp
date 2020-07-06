@@ -2,7 +2,7 @@ import * as React from 'react';
 import {Provider} from 'react-redux';
 import {store, persistor} from './Store';
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import {Button} from "react-native";
+import {Button} from "react-native-elements";
 import {PersistGate} from "redux-persist/integration/react";
 import {createStackNavigator} from "@react-navigation/stack";
 import {NavigationContainer, DefaultTheme} from "@react-navigation/native";
@@ -52,9 +52,10 @@ const MovieScreens=({navigation})=>{
                 options={{
                     headerRight: () => (
                         <Button
+                            type={'clear'}
                             onPress={() => navigation.navigate('Add Movie')}
                             title="Add"
-                            color="#fff"
+                            titleStyle={{color:'#fff'}}
                         />
                     )
                 }}
@@ -72,8 +73,9 @@ const MovieScreens=({navigation})=>{
                     headerTitle: route.params.data.title.length>25?route.params.data.title.slice(0,23)+'...':route.params.data.title,
                     headerRight:()=>(
                         <Button
+                            type={'clear'}
                             title={'Edit'}
-                            color={"#fff"}
+                            titleStyle={{color:'#fff'}}
                             onPress={()=>navigation.navigate('EditMovie', {data:route.params.data})}
                         />
                     )
@@ -93,8 +95,9 @@ const SeriesScreens=({navigation})=>{
               options={{
                   headerRight:()=>(
                       <Button
+                        type={'clear'}
                         title={'Add'}
-                        color={'#fff'}
+                        titleStyle={{color:'#fff'}}
                         onPress={()=>navigation.navigate('AddSeries')}
                       />
                   )
@@ -109,8 +112,9 @@ const SeriesScreens=({navigation})=>{
                   headerTitle: route.params.data.title,
                   headerRight:()=>(
                       <Button
+                          type={'clear'}
                           title={'Edit'}
-                          color={"#fff"}
+                          titleStyle={{color:'#fff'}}
                           onPress={()=>navigation.navigate('EditSeries', {data:route.params.data})}
                       />
                   )
@@ -132,7 +136,8 @@ const AuthScreens=({navigation})=>{
                     headerRight:()=>(
                         <Button
                             title={'Edit'}
-                            color={'#fff'}
+                            type={'clear'}
+                            titleStyle={{color:'#fff'}}
                             onPress={()=>navigation.navigate('AuthEdit')}
                         />
                     )

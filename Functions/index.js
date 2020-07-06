@@ -63,37 +63,25 @@ export const ListStats=(list)=>{
 
 };
 
-const arrType=(type)=>{
-    switch(type){
-        case 'register':
-            return ['email','password','name'];
-        case'login':
-            return ['email','password'];
-        case'profile':
-            return ['email','name'];
-        default :
-            return ['email'];
-    }
-}
 
-export const Validation=(type,data)=>{
+
+export const Validation=(data)=>{
     const reg =/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
     let error=null;
 
-    arrType(type).map(test=>{
-        if(data[test] && !error){
-            const d = data[test];
-            if(!d.length>0){
-                error='Please check your '+test+'!'
+    const keys =Object.keys(data)
+
+    for(let key of keys) {
+        if (!error) {
+            const value = data[key];
+            if (!value.length > 0) {
+                error = 'Please check your ' + key + '!';
             }
-            if(test==='email' && !reg.test(d)){
-                error='Please check your '+test+'!'
+
+            if (key === 'email' && !reg.test(value)) {
+                error = 'Please check your ' + key + '!';
             }
-        }else{
-            error='Please check your '+test+'!'
         }
-    })
-
-
+    }
     return error;
 }

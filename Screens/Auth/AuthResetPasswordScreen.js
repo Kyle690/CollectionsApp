@@ -7,6 +7,7 @@ import Loading from "../../Components/Loading";
 import {BlueButton} from "../../Components/Buttons";
 import {Validation} from "../../Functions";
 import {ResetPassword} from "../../Store/Actions/AuthActions";
+import AlertModal from "../../Components/AlertModal";
 
 const INITIAL_STATE={
     loading:false,
@@ -21,7 +22,7 @@ const AuthResetPasswordScreen=({navigation})=>{
     const {loading,email, message}=state;
 
     const handleReset=()=>{
-        let err=Validation('',{email});
+        let err=Validation({email});
         if(!err){
             dispatch({type:'loading'})
             dispatch({type:'message',payload:null});
@@ -38,6 +39,11 @@ const AuthResetPasswordScreen=({navigation})=>{
 
     return (
         <SafeAreaView style={styles.container}>
+            <AlertModal
+                show={!!message}
+                onClose={()=>dispatch({type:'clearMessage'})}
+                message={message}
+            />
             <Loading show={loading} message={'Submitting...'}/>
             <AvoidView >
                 <Image source={require('../../assets/cartoonLogo.png')} style={[{height:150,width:150}, styles.image]}/>
@@ -68,6 +74,8 @@ const AuthResetPasswordScreen=({navigation})=>{
 
 const reducer=(state,action)=>{
     switch(action.type){
+        case'clearMessage':
+            return {...state,message:null}
         case'loading':
             return {...state,loading:!state.loading}
         case 'email':

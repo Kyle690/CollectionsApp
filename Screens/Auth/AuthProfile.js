@@ -1,6 +1,6 @@
 import React,{useEffect, useState, useLayoutEffect} from "react";
-import {View, SafeAreaView, StyleSheet, ScrollView, Button} from 'react-native';
-import {Divider, ListItem, Text} from 'react-native-elements';
+import {View, SafeAreaView, StyleSheet, ScrollView} from 'react-native';
+import {Divider, ListItem, Text, Button} from 'react-native-elements';
 import {connect}from 'react-redux';
 import Constants from 'expo-constants';
 
@@ -20,7 +20,11 @@ const AuthProfile=(props)=>{
     useLayoutEffect(()=>{
         navigation.setOptions({
             headerLeft:()=>(
-                <Button color={'white'} title={'Help'} onPress={()=>OpenHelp(()=>navigation.navigate('HelpScreen'))}/>
+                <Button
+                    type={'clear'}
+                    titleStyle={{color:'#fff'}}
+                    title={'Help'}
+                    onPress={()=>OpenHelp(()=>navigation.navigate('HelpScreen'))}/>
             )
         })
     })

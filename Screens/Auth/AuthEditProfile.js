@@ -1,6 +1,6 @@
 import React,{useReducer, useEffect, useLayoutEffect} from 'react';
-import {View, StyleSheet, SafeAreaView, ScrollView, Button} from 'react-native';
-import {Divider, Input, Text} from 'react-native-elements';
+import {View, StyleSheet, SafeAreaView} from 'react-native';
+import {Divider, Input, Text, Button} from 'react-native-elements';
 import {connect}from 'react-redux';
 
 
@@ -31,7 +31,11 @@ const AuthEditProfile=({navigation, savedName,savedEmail, LogUserOut, UpdateUser
     useLayoutEffect(()=>{
         navigation.setOptions({
             headerRight:()=>(
-                <Button color={'white'} title={'Sign Out'} onPress={()=>dispatch({type:'modal'})}/>
+                <Button
+                    type={'clear'}
+                    title={'Sign Out'}
+                    titleStyle={{color:'#fff'}}
+                    onPress={()=>dispatch({type:'modal'})}/>
             )
         })
     })
@@ -57,7 +61,7 @@ const AuthEditProfile=({navigation, savedName,savedEmail, LogUserOut, UpdateUser
     }
 
     const handleUpdateUser=()=>{
-        let err=Validation('profile',{email,name});
+        let err=Validation({email,name});
         if(!err){
             dispatch({type:'loading'});
             UpdateUser({email,name},res=>{

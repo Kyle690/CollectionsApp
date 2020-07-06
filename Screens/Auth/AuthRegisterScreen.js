@@ -25,7 +25,7 @@ const AuthRegisterScreen=({navigation, RegisterUser})=>{
     const [alertMsg,setAlertMsg]=useState(null);
 
     const handleRegistration=()=>{
-        let error= Validation('register',{name,email,password})
+        let error= Validation({name,email,password})
 
         if(!error){
             if(!terms){
@@ -39,8 +39,6 @@ const AuthRegisterScreen=({navigation, RegisterUser})=>{
                         setAlertMsg(res.msg);
                         setAlert(true);
                     }
-
-
                 })
             }
 
@@ -98,7 +96,7 @@ const AuthRegisterScreen=({navigation, RegisterUser})=>{
                     value={password}
                     secureTextEntry
                 />
-                <Switch title={'Terms and Conditions'} checked={terms} onPress={()=>setTerms(!terms)} />
+                <Switch title={'Legal and Conditions'} checked={terms} onPress={()=>setTerms(!terms)} />
                 <TouchableOpacity onPress={()=>navigation.navigate('AuthLogin')}>
                     <Text style={styles.textStyle}>Already signed up?</Text>
                 </TouchableOpacity>

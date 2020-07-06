@@ -51,7 +51,7 @@ export const UpdateUser=({email,name},callback)=>async dispatch=>{
     if(user){
        await user.updateEmail(email).catch(err=>err??callback({status:2,msg:err.message}));
 
-       await user.updateProfile({displayName:name}).catch(err=>err??callback({status:2,msg:err.message}));
+       await user.updateProfile({displayName:name}).catch(err=>err?callback({status:2,msg:err.message}):null);
         dispatch({type:AUTH_LOGIN,payload:{name,email}});
         callback({status:1});
 
@@ -64,5 +64,5 @@ export const UpdateUser=({email,name},callback)=>async dispatch=>{
 export const ResetPassword=(email,callback)=>{
     auth.sendPasswordResetEmail(email)
         .then(()=>callback({status:1}))
-        .catch(err=>err??callback({status:2,msg:err.message}));
+        .catch(err=>err?callback({status:2,msg:err.message}):null);
 }
